@@ -82,5 +82,6 @@ prepar_dict.py 主要就是把词组分成字序列的形式，也叫"发音词�
 
 *** 训练语言模型，并转换为G
 wenet 的例子中采用了srilm，个人不太喜欢，所以这里使用[kenlm ](https://github.com/kpu/kenlm) 讲解 
+简单说下语言模型，不科学的讲，语言模型是对句子序列建模，即给定序列x1，...xn, 模型可给出P(x1...xn)，基于马尔可夫假设
+就可以转换为ngram的条件概率的乘积。具体细节 [[https://web.stanford.edu/~jurafsky/slp3][speech and language processing]]
 
-$ p(x_1,x_2,x_3...,x_n) $
