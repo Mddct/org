@@ -80,7 +80,7 @@ prepar_dict.py 主要就是把词组分成字序列的形式，也叫"发音词�
 （我基于大词典做了个 https://raw.githubusercontent.com/Mddct/go-bert/main/tools/lexicon_no_unk.txt，
 这个项目同时封装了bert tokenize，方便中英文tokenzie）
 
----
 *** 训练语言模型，并转换为G
 wenet 的例子中采用了srilm，个人不太喜欢，所以这里使用[kenlm ](https://github.com/kpu/kenlm) 讲解 
-简
+
+$ p(x_1,x_2,x_3...,x_n) $
