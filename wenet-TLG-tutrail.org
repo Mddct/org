@@ -5,12 +5,13 @@
 - 训练语言模型得到arpa吗，然后转成 G
 
 最后T L G 做compose组成一个wfst，ctc的后验概率在该大图上做解码。
-```bash
+#+begin_src bash
+
 ls wenet/examples/aishell/s0/run.sh
-```
----
-*** 准备"发音词典"： L
-```bash
+#+end_src
+
+**** 准备"发音词典"： L
+#+begin_src bash
 $ head data/dict/lang_char.txt
 <blank> 0
 <unk> 1
@@ -29,15 +30,17 @@ $ tail -5 data/dict/lang_char.txt
 龚 4230
 龟 4231
 <sos/eos> 4232
-```
+#+end_src
+
 wenet采用建模单元为汉字，对应的词典为lang_char.txt。包含 
 \<blank\> \<unk\> \<sos\/eos\> 和其他汉字
-```
+#+begin_src 
 unit_file=lang_char.txt
 tools/fst/prepare_dict.py $unit_file ${data}/resource_aishell/lexicon.txt  data/local/dict/lexicon.txt
-```
+#+end_src
+
 prepar_dict.py 得到的"发音词典"lexicon.txt,格式如下：
-```bash
+#+begin_src 
 $ head resource_aishell/lexicon.txt
 SIL sil
 <SPOKEN_NOISE> sil
@@ -68,7 +71,7 @@ $ tail -5 lexicon.txt
 坐姿 坐 姿
 座充 座 充
 座驾 座 驾
-```
+#+end_src
 prepar_dict.py 主要就是把词组分成字序列的形式，也叫"发音词典"。其中需要注意
 
 - 去掉 SIL <SPOKEN_NOISE> 
@@ -80,4 +83,4 @@ prepar_dict.py 主要就是把词组分成字序列的形式，也叫"发音词�
 ---
 *** 训练语言模型，并转换为G
 wenet 的例子中采用了srilm，个人不太喜欢，所以这里使用[kenlm ](https://github.com/kpu/kenlm) 讲解 
-简单说下语言模型，不科学的将，语言模型是对句子序列建模，即
+简
