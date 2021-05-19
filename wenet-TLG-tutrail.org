@@ -1,5 +1,5 @@
 ** wenet TLG tutorial
-   整体上：
+*** 整体上：
    - 准备建模单元T
    - 准备"发音词典"L
    - 训练语言模型得到arpa吗，然后转成 G
@@ -10,7 +10,7 @@
      ls wenet/examples/aishell/s0/run.sh
    #+end_src
 
-**** 准备"发音词典"： L
+*** 准备"发音词典"： L
      #+begin_src bash
        $ head data/dict/lang_char.txt
        <blank> 0
@@ -80,7 +80,7 @@ $ tail -5 lexicon.txt
      （我基于大词典做了个 https://raw.githubusercontent.com/Mddct/go-bert/main/tools/lexicon_no_unk.txt，
      这个项目同时封装了bert tokenize，方便中英文tokenzie）
 
-**** 训练语言模型，并转换为G
+*** 训练语言模型，并转换为G
      wenet 的例子中采用了srilm，个人不太喜欢，所以这里使用[[https://github.com/kpu/kenlm][kenlm]]
 
      简单说下语言模型，不科学的讲，语言模型是对句子序列建模，即给定序列x1，...xn, 模型可给出P(x1...xn)，基于马尔可夫假设
