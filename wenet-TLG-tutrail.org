@@ -113,4 +113,4 @@ $ tail -5 lexicon.txt
       -0.9624553      是 您好 </s>
       #+end_src bash
      3. arpa 文件转换为G.fst
-    
+    tools/fst/make_tlg.sh data/local/lm data/local/lang data/lang_test
