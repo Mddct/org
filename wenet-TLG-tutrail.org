@@ -89,6 +89,18 @@ $ tail -5 lexicon.txt
      1. 准备数据集
      
      2. 训练 导出arpa文件
-     
+      #+begin_src bash
+     $ lmplz  -o 3 --text final.text --discount_fallback  --arpa final.arpa && head final.arpa
+     \data\
+ngram 1=93270
+ngram 2=1522312
+ngram 3=6256632
+
+\1-grams:
+-6.190314	<unk>	0
+0	<s>	-1.8707849
+-1.7898152	</s>	0
+-3.6113515	您好	-0.48908365
+      #+end_src bash
      3. arpa 文件转换为G.fst
     
