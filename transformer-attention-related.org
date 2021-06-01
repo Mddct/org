@@ -1,7 +1,7 @@
 ** attention
 - global relative
 
-- local relative (Local Self-Attention)
+- local relative ([[https://arxiv.org/pdf/2005.04908.pdf][Local Self-Attention]])
 
 - local
 
