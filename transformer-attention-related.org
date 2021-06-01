@@ -9,7 +9,11 @@
 
 local 和 local relative 区别是后者是加入了相对位置信息 [[https://zhuanlan.zhihu.com/p/344604604][wenet && conformer 相对位置信息]]
 #+begin_src python
-    if atten_type == 'local_relative':
+    if atten_type == 'global_relative':
+      atten_tpl = (
+          attention_lib.MultiHeadedAttentionXL.Params().Set(
+              rel_pos_emb_dim=relative_pos_emb_dim))
+    elif atten_type == 'local_relative':
       atten_tpl = attention_lib.LocalSelfAttentionXL.Params().Set(
           left_context=atten_left_context,
           right_context=atten_right_context,
@@ -17,5 +21,7 @@ local 和 local relative 区别是后者是加入了相对位置信息 [[https:/
     elif atten_type == 'local':
       atten_tpl = attention_lib.LocalSelfAttention.Params().Set(
           left_context=atten_left_context, right_context=atten_right_context)
+    else:
+      atten_tpl = attention_lib.MultiHeadedAttention.Params()
 
 #+end_src
