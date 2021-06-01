@@ -1,5 +1,21 @@
-*** attention
-**** global relative
-**** local relative
-**** local
-**** global casual
+** attention
+- global relative
+
+- local relative
+
+- local
+
+- global casual
+
+local 和 local relative 区别是后者是加入了相对位置信息
+#+begin_src python
+    if atten_type == 'local_relative':
+      atten_tpl = attention_lib.LocalSelfAttentionXL.Params().Set(
+          left_context=atten_left_context,
+          right_context=atten_right_context,
+          rel_pos_emb_dim=relative_pos_emb_dim)
+    elif atten_type == 'local':
+      atten_tpl = attention_lib.LocalSelfAttention.Params().Set(
+          left_context=atten_left_context, right_context=atten_right_context)
+
+#+end_src
