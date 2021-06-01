@@ -1,4 +1,4 @@
-** wenet TLG tutorial
+** wenet TLG tutorial（未完待续）
 *** 整体上：
    - 准备建模单元T
    - 准备"发音词典"L
