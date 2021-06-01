@@ -7,7 +7,7 @@
 
 - global casual
 
-local 和 local relative 区别是后者是加入了相对位置信息
+local 和 local relative 区别是后者是加入了相对位置信息 [[https://zhuanlan.zhihu.com/p/344604604][wenet && conformer 相对位置信息]]
 #+begin_src python
     if atten_type == 'local_relative':
       atten_tpl = attention_lib.LocalSelfAttentionXL.Params().Set(
