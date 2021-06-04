@@ -1,2 +1,3 @@
 *** nn lm
 - [[https://en.wikipedia.org/wiki/Brown_clustering][Brown clustering algorithm]]
+- RNN_language_model_with_word_clustering_and_class-.pdf
