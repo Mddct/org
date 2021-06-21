@@ -30,6 +30,7 @@ local 和 local relative 区别是后者是加入了相对位置信息 [[https:/
 #+end_src
 
 #+begin_src python
+## https://zhuanlan.zhihu.com/p/74485142
 def rel_shift(x):
   x_size = tf.shape(x)
 
