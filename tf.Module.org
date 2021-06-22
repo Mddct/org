@@ -1,4 +1,5 @@
 ** tf2 变量管理
+*** tf.Module
 #+begin_src python
 >>> class Dense(tf.Module):
      def __init__(self, input_dim, output_size, name):
@@ -13,4 +14,29 @@
 d.b                        d.name_scope               d.submodules               d.variables                d.with_name_scope(
 d.name                     d.non_trainable_variables  d.trainable_variables      d.w
 
+#+end_src
+*** 
+#+begin_src python
+class Module(tensorflow.python.training.tracking.tracking.AutoTrackable)
+
+### 继承关系
+Trackable
+  |
+  |-- tf.Variable
+  |
+  |-- MutableHashTable
+  |
+  |-- AutoTrackable
+        |
+        |-- ListWrapper/DictWrapper
+        |
+        |-- tf.train.Checkpoint
+        |
+        |-- tf.Module
+                |
+                |-- tf.keras.layers.Layer
+                        |
+                        |-- tf.keras.Model
+                                |
+                                |-- tf.keras.Sequential
 #+end_src
