@@ -3,12 +3,12 @@
 >>> class Dense(tf.Module):
      def __init__(self, input_dim, output_size, name):
              super(Dense, self).__init__(name=name)
-             self.w = tf.Variable(tf.random.normal([input_dim, output_size]))
-             self.b = tf.Variable(tf.zeros([output_size], name="b"))
+             self.w = tf.Variable(tf.random.normal([input_dim, output_size]), name="w")
+             self.b = tf.Variable(tf.zeros([output_size]), name="b")
      def __call__(self, x):
              y = tf.matmul(x, self.w) + self.b
              return tf.nn.relu(y)
-
+>>> d = Dense(input_dim=2, output_size=256, name="dense")
 >>> d.${TAB}
 d.b                        d.name_scope               d.submodules               d.variables                d.with_name_scope(
 d.name                     d.non_trainable_variables  d.trainable_variables      d.w
