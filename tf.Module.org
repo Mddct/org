@@ -136,3 +136,4 @@ class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
 - [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017592449371072][python metaclass]] 
 - [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017502939956896][python 多重继承]]
 - [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017630786314240][threading.local]]
+- [[https://www.programiz.com/python-programming/methods/built-in/reversed][python reversed]]
