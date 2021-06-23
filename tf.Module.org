@@ -137,3 +137,17 @@ class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
 - [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017502939956896][python 多重继承]]
 - [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017630786314240][threading.local]]
 - [[https://www.programiz.com/python-programming/methods/built-in/reversed][python reversed]]
+*** lingvo关键数据类型
+**** NestedMap
+#+begin_src
+      foo = NestedMap()
+      foo['x'] = 10
+      foo.y = 20
+      assert foo.x * 2 == foo.y
+#+end_src
+核心的
+
+#+end_src
+
+**** Params
+**** BaseLayer
