@@ -107,5 +107,5 @@ class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
   """
   .......
 #+end_src 
-[[https://www.liaoxuefeng.com/wiki/1016959663602400/1017592449371072][python metaclass]]
+[[https://www.liaoxuefeng.com/wiki/1016959663602400/1017592449371072][python metaclass]] [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017502939956896][python 多重继承]]
 
