@@ -164,6 +164,10 @@ name
 
 **** Params
 #+begin_src
-def FProp(self, theta, *args, **kwargs)
+
 #+end_src
 **** BaseLayer
+#+begin_src
+def FProp(self, theta, *args, **kwargs)
+def FPropMeta(cls, params, *args, **kwargs):
+#+end_src
