@@ -163,4 +163,7 @@ name
 #+end_src
 
 **** Params
+#+begin_src
+def FProp(self, theta, *args, **kwargs)
+#+end_src
 **** BaseLayer
