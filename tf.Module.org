@@ -69,30 +69,6 @@ class BaseLayerMeta(type):
     self._disable_create_child = True
     self._VerifyChildren()
     # pylint: enable=protected-access
-    return selfclass BaseLayerMeta(type):
-  """Metaclass tracking child layers and variable initialization."""
-
-  # pylint: disable=bad-mcs-classmethod-argument
-  def __new__(mcs, name, bases, dct):
-    cls = super(BaseLayerMeta, mcs).__new__(mcs, name, bases, dct)
-    if '__init__' not in dct:
-
-      def TrivialInit(self, params):
-        super(cls, self).__init__(params)  # pylint: disable=bad-super-call
-
-      cls.__init__ = TrivialInit
-
-    cls.__init__ = _BaseLayerInitWrapper(cls.__init__)
-    return cls
-  # pylint: enable=bad-mcs-classmethod-argument
-
-  def __call__(cls, *args, **kwargs):
-    self = super().__call__(*args, **kwargs)
-    # This happens after self.__init__()
-    # pylint: disable=protected-access
-    self._disable_create_child = True
-    self._VerifyChildren()
-    # pylint: enable=protected-access
     return self
     
 class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
