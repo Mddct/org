@@ -1,0 +1,166 @@
+** tf2 变量管理 与lingvo 走读笔记
+*** tf.Module 
+tf.Module 中并没有显示的compute前向的过程
+#+begin_src python
+>>> class Dense(tf.Module):
+     def __init__(self, input_dim, output_size, name):
+             super(Dense, self).__init__(name=name)
+             self.w = tf.Variable(tf.random.normal([input_dim, output_size]), name="w")
+             self.b = tf.Variable(tf.zeros([output_size]), name="b")
+     def __call__(self, x):
+             y = tf.matmul(x, self.w) + self.b
+             return tf.nn.relu(y)
+>>> d = Dense(input_dim=2, output_size=256, name="dense")
+>>> d.${TAB}
+d.b                        d.name_scope               d.submodules               d.variables                d.with_name_scope(
+d.name                     d.non_trainable_variables  d.trainable_variables      d.w
+
+#+end_src
+*** 
+#+begin_src python
+class Module(tensorflow.python.training.tracking.tracking.AutoTrackable)
+
+### 继承关系
+Trackable
+  |
+  |-- tf.Variable
+  |
+  |-- MutableHashTable
+  |
+  |-- AutoTrackable
+        |
+        |-- ListWrapper/DictWrapper
+        |
+        |-- tf.train.Checkpoint
+        |
+        |-- tf.Module
+                |
+                |-- tf.keras.layers.Layer
+                        |
+                        |-- tf.keras.Model
+                                |
+                                |-- tf.keras.Sequential
+#+end_src
+详细，参考[[https://zhuanlan.zhihu.com/p/73575776][TensorFlow 2.0学习笔记之状态容器]]
+
+在lingvo中，自己写了layer， 并没有使用tf.keras.layers.layer
+#+begin_src python
+
+class ThreadLocalStack(threading.local):
+
+  def __init__(self):
+    super().__init__()
+    self.stack = []
+    
+_LAYER_STACK = py_utils.ThreadLocalStack()
+    
+def _BaseLayerInitWrapper(func):  # pylint: disable=invalid-name
+  """A decorator for layer's __init__.
+  Args:
+    func: The __init__ method of `BaseLayer`'s subclasses.
+  Returns:
+    A decorator wrapper for layer's initializer. Note that this wrapper can
+    be called multiple times for the same layer instance, once for each
+    __init__() for classes on the class hierarchy.
+  """
+
+  def Wrapper(self, *args, **kwargs):
+    """Decorator wrapper fn."""
+    stack = _LAYER_STACK.stack
+    if stack and stack[-1] is self:
+      # Short circuit if called multiple times (eg. super() chain).
+      func(self, *args, **kwargs)
+      return
+
+    # Push back self (the current layer) to the stack.
+    stack_size = len(stack)
+    stack.append(self)
+    try:
+      # Calls the layer's real __init__ method.
+      func(self, *args, **kwargs)
+      if len(stack) > 1:
+        # Records the fact stack[-2] just created a sub-layer self.
+        stack[-2]._AutoAddChild(self)  # pylint: disable=protected-access
+    finally:
+      # Pop out self (the current layer).
+      assert stack[-1] is self
+      stack.pop()
+      assert len(stack) == stack_size
+
+    if not stack:
+      # Outermost layer just finished __init__.
+      if self.cluster.immediately_instantiate_variables:
+        self.InstantiateVariables()
+
+  return Wrapper
+  
+class BaseLayerMeta(type):
+  """Metaclass tracking child layers and variable initialization."""
+
+  # pylint: disable=bad-mcs-classmethod-argument
+  def __new__(mcs, name, bases, dct):
+    cls = super(BaseLayerMeta, mcs).__new__(mcs, name, bases, dct)
+    if '__init__' not in dct:
+
+      def TrivialInit(self, params):
+        super(cls, self).__init__(params)  # pylint: disable=bad-super-call
+
+      cls.__init__ = TrivialInit
+
+    cls.__init__ = _BaseLayerInitWrapper(cls.__init__)
+    return cls
+  # pylint: enable=bad-mcs-classmethod-argument
+
+  def __call__(cls, *args, **kwargs):
+    self = super().__call__(*args, **kwargs)
+    # This happens after self.__init__()
+    # pylint: disable=protected-access
+    self._disable_create_child = True
+    self._VerifyChildren()
+    # pylint: enable=protected-access
+    return self
+    
+class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
+  r"""Base class for all the layer object.
+  As this BaseLayer is a proper sub-class of tf.Module, it supports proper
+  tracking and reflection of key constituents such as variables and submodules.
+  self.submodules returns a list of submodules that are reachable through
+  recursive member access from self.
+  self.variables returns a list of Variables that are reachable through
+  recursive member access from self.
+  self(\*args, \*\*kwargs) carries out computation on the input args and kwargs.
+  """
+  .......
+  虽然集成了tf.Moudle 但是disable auto-tracking: self._setattr_tracking = False 性能问题？所以所有的依赖都得显示定义
+#+end_src 
+- [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017592449371072][python metaclass]] 
+- [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017502939956896][python 多重继承]]
+- [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017630786314240][threading.local]]
+- [[https://www.programiz.com/python-programming/methods/built-in/reversed][python reversed]]
+*** lingvo关键数据类型
+**** NestedMap
+#+begin_src python
+      foo = NestedMap()
+      foo['x'] = 10
+      foo.y = 20
+      assert foo.x * 2 == foo.y
+#+end_src
+
+#+begin_src python
+a = NestedMap()
+a["hello"] = "world"
+a.world = "name"
+
+print(a.hello)
+print(a["world"])
+
+print(a.DeepCopy())
+
+world
+name
+{'hello': 'world', 'world': 'name'}
+
+#+end_src
+
+**** Params
+**** BaseLayer
