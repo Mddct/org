@@ -139,14 +139,14 @@ class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
 - [[https://www.programiz.com/python-programming/methods/built-in/reversed][python reversed]]
 *** lingvo关键数据类型
 **** NestedMap
-#+begin_src
+#+begin_src python
       foo = NestedMap()
       foo['x'] = 10
       foo.y = 20
       assert foo.x * 2 == foo.y
 #+end_src
 
-#+begin_rc
+#+begin_src python
 a = NestedMap()
 a["hello"] = "world"
 a.world = "name"
