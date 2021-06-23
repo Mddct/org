@@ -45,6 +45,15 @@ Trackable
 
 在lingvo中，自己写了layer， 并没有使用tf.keras.layers.layer
 #+begin_src python
+
+class ThreadLocalStack(threading.local):
+
+  def __init__(self):
+    super().__init__()
+    self.stack = []
+    
+_LAYER_STACK = py_utils.ThreadLocalStack()
+    
 def _BaseLayerInitWrapper(func):  # pylint: disable=invalid-name
   """A decorator for layer's __init__.
   Args:
@@ -123,5 +132,6 @@ class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
   """
   .......
 #+end_src 
-[[https://www.liaoxuefeng.com/wiki/1016959663602400/1017592449371072][python metaclass]] [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017502939956896][python 多重继承]]
-
+- [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017592449371072][python metaclass]] 
+- [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017502939956896][python 多重继承]]
+- [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017630786314240][threading.local]]
