@@ -45,6 +45,46 @@ Trackable
 
 在lingvo中，自己写了layer， 并没有使用tf.keras.layers.layer
 #+begin_src python
+def _BaseLayerInitWrapper(func):  # pylint: disable=invalid-name
+  """A decorator for layer's __init__.
+  Args:
+    func: The __init__ method of `BaseLayer`'s subclasses.
+  Returns:
+    A decorator wrapper for layer's initializer. Note that this wrapper can
+    be called multiple times for the same layer instance, once for each
+    __init__() for classes on the class hierarchy.
+  """
+
+  def Wrapper(self, *args, **kwargs):
+    """Decorator wrapper fn."""
+    stack = _LAYER_STACK.stack
+    if stack and stack[-1] is self:
+      # Short circuit if called multiple times (eg. super() chain).
+      func(self, *args, **kwargs)
+      return
+
+    # Push back self (the current layer) to the stack.
+    stack_size = len(stack)
+    stack.append(self)
+    try:
+      # Calls the layer's real __init__ method.
+      func(self, *args, **kwargs)
+      if len(stack) > 1:
+        # Records the fact stack[-2] just created a sub-layer self.
+        stack[-2]._AutoAddChild(self)  # pylint: disable=protected-access
+    finally:
+      # Pop out self (the current layer).
+      assert stack[-1] is self
+      stack.pop()
+      assert len(stack) == stack_size
+
+    if not stack:
+      # Outermost layer just finished __init__.
+      if self.cluster.immediately_instantiate_variables:
+        self.InstantiateVariables()
+
+  return Wrapper
+  
 class BaseLayerMeta(type):
   """Metaclass tracking child layers and variable initialization."""
 
