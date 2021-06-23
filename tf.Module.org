@@ -153,6 +153,13 @@ a.world = "name"
 
 print(a.hello)
 print(a["world"])
+
+print(a.DeepCopy())
+
+world
+name
+{'hello': 'world', 'world': 'name'}
+
 #+end_src
 
 **** Params
