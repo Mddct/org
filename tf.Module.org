@@ -1,4 +1,4 @@
-** tf2 变量管理
+** tf2 变量管理 与lingvo 走读笔记
 *** tf.Module 
 tf.Module 中并没有显示的compute前向的过程
 #+begin_src python
