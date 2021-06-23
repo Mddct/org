@@ -145,8 +145,14 @@ class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
       foo.y = 20
       assert foo.x * 2 == foo.y
 #+end_src
-核心的
 
+#+begin_rc
+a = NestedMap()
+a["hello"] = "world"
+a.world = "name"
+
+print(a.hello)
+print(a["world"])
 #+end_src
 
 **** Params
