@@ -131,7 +131,7 @@ class BaseLayer(tf.Module, metaclass=BaseLayerMeta):
   self(\*args, \*\*kwargs) carries out computation on the input args and kwargs.
   """
   .......
-  虽然集成了tf.Moudle 但是disable auto-tracking: self._setattr_tracking = False
+  虽然集成了tf.Moudle 但是disable auto-tracking: self._setattr_tracking = False 性能问题？所以所有的依赖都得显示定义
 #+end_src 
 - [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017592449371072][python metaclass]] 
 - [[https://www.liaoxuefeng.com/wiki/1016959663602400/1017502939956896][python 多重继承]]
