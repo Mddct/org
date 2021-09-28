@@ -45,3 +45,30 @@ def rel_shift(x):
 
 ** pos 
 - relative sinusoidal positional encoding scheme
+
+** wenet mask tf
+#+begin_src python
+def tf_subsequent_chunk_mask(
+        size,
+        chunk_size,
+        num_left_chunks=tf.constant(-1, dtype=tf.int32),
+):
+
+  index = tf.range(0,size)
+
+  mask_seq = tf.minimum(((index // chunk_size) +1)*chunk_size , size)
+  mask_1 = tf.sequence_mask(mask_seq, maxlen=size)
+
+  def limit_left_fn():
+    left_mask = tf.maximum((
+        index // chunk_size - num_left_chunks)*chunk_size,0)
+    
+    mask_2 = tf.sequence_mask(left_mask, maxlen=size)
+    return mask_1 & (~mask_2)
+
+  return tf.cond(
+      tf.not_equal(num_left_chunks, -1),
+      limit_left_fn,
+      lambda: mask_1,
+    )
+  #+end_src
