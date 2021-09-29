@@ -124,4 +124,10 @@ def add_optional_chunk_mask(xs: tf.Tensor, masks: tf.Tensor,
   chunk_masks = masks & chunk_masks  # (B, L, L)
 
   return chunk_masks
+  
+def mask_pad_mask(lengths: tf.Tensor):
+  return ~tf.sequence_mask(lengths=length)
+
+def mask_pad_mask(lengths: tf.Tensor):
+  return tf.sequence_mask(lengths=length)
 #+end_src
