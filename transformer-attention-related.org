@@ -74,6 +74,7 @@ def tf_subsequent_chunk_mask(
   #+end_src
 
 #+begin_src python
+
 @tf.function
 def add_optional_chunk_mask(xs: tf.Tensor, masks: tf.Tensor,
                             use_dynamic_chunk: bool,
@@ -83,7 +84,7 @@ def add_optional_chunk_mask(xs: tf.Tensor, masks: tf.Tensor,
   
   
   if use_dynamic_chunk:
-        max_len = xs.size(1)
+        max_len = tf.shape(xs)[1]
         if decoding_chunk_size < 0:
             chunk_size = max_len
             num_left_chunks = -1
