@@ -72,3 +72,55 @@ def tf_subsequent_chunk_mask(
       lambda: mask_1,
     )
   #+end_src
+
+#+begin_src python
+@tf.function
+def add_optional_chunk_mask(xs: tf.Tensor, masks: tf.Tensor,
+                            use_dynamic_chunk: bool,
+                            use_dynamic_left_chunk: bool,
+                            decoding_chunk_size: int, static_chunk_size: int,
+                            num_decoding_left_chunks: int):
+  
+  
+  if use_dynamic_chunk:
+        max_len = xs.size(1)
+        if decoding_chunk_size < 0:
+            chunk_size = max_len
+            num_left_chunks = -1
+        elif decoding_chunk_size > 0:
+            chunk_size = decoding_chunk_size
+            num_left_chunks = num_decoding_left_chunks
+        else:
+            chunk_size = tf.random.uniform(
+                shape=[],
+                 minval=1, 
+                 maxval=max_len, 
+                 dtype=tf.int32)
+            num_left_chunks = -1
+            if chunk_size > max_len // 2:
+                chunk_size = max_len
+            else:
+                chunk_size = chunk_size % 25 + 1
+                if use_dynamic_left_chunk:
+                    max_left_chunks = (max_len - 1) // chunk_size
+                    num_left_chunks = tf.random.uniform(
+                        shape=[], 
+                        minval=0, 
+                        maxval=max_left_chunks, 
+                        dtype=tf.int32)   
+
+  elif static_chunk_size > 0:
+      num_left_chunks = num_decoding_left_chunks
+  else:
+      return masks
+
+  chunk_size =  tf.convert_to_tensor(chunk_size) 
+  num_left_chunks = tf.convert_to_tensor(num_left_chunks)
+
+  chunk_masks = tf_subsequent_chunk_mask(xs.shape[1], chunk_size,
+                                        num_left_chunks)  # (L, L)
+  chunk_masks =  tf.expand_dims(chunk_masks, 0) #[1,L, L]
+  chunk_masks = masks & chunk_masks  # (B, L, L)
+
+  return chunk_masks
+#+end_src
