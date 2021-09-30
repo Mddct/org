@@ -165,7 +165,7 @@ subasample 4
             kernel_regularizer=kernel_regularizer,
             bias_regularizer=bias_regularizer,
         )
-        self.time_reduction_factor = self.conv1.strides[0] + self.conv2.strides[0]
+        self.time_reduction_factor = self.conv1.strides[0] + self.conv2.strides[0] // may be wrong for "valid" type, change it later 
 
     def call(
         self,
