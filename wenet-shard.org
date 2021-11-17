@@ -1,5 +1,6 @@
 *** [TODO]shard 格式
 1 [header]
+
 2 tar header：
   
   text header: filename = ${key} + ".txt", data=txt, info_size = len(data)
