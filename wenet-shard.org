@@ -8,6 +8,12 @@
   wav header:  filename=${wav_filename}, data=wav_bytes, info_size = len(data )
   
     #+begin_src go
+    type Record struct{
+        Key string
+        WavPath stirng
+        Text string
+
+  }
     func tarshard(writer io.Writer, records []*Record) {
         tw := tar.NewWriter(writer)
         for i := range records {
@@ -32,15 +38,19 @@
                 }
 
                 // wav header and body
+                wavbody,  err := ioutil.ReadAll(record.WavPath)
+                if err != nil{
+                        log.Fatal(err)
+                }
                 wavhdr := &tar.Header{
-                        Name: record.WavPath,
+                        Name: name + ".wav",
                         Mode: 0777,
-                        Size: int64(len(record.WavPath)),
+                        Size: int64(len(wavbody)),
                 }
                 if _, err := tw.WriteHeader(wavhdr); err != nil {
                         log.Fatal(err)
                 }
-                if _, err := tw.Write([]byte(record.WavPath)) {
+                if _, err := tw.Write(wavbody) {
                         log.Fatal(err)
                 }
 
