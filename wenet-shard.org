@@ -1,0 +1,4 @@
+** [TODO]shard 格式
+tar header：[{${key}.txt , wav_bytes},.... ]
+** [TODO] untar 格式 dataset=processor(dataset,), 类tf。data格式
+** [TODO] shard distributed , 数据不均衡
