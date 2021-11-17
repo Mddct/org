@@ -30,10 +30,10 @@
                         Mode: 0777,
                         Size: int64(len(record.Text)),
                 }
-                if _, err := tw.WriteHeader(hdr); err != nil {
+                if  err := tw.WriteHeader(hdr); err != nil {
                         log.Fatal(err)
                 }
-                if _, err := tw.Write([]byte(record.Text)) {
+                if _, err := tw.Write([]byte(record.Text)); err != nil {
                         log.Fatal(err)
                 }
 
@@ -47,10 +47,10 @@
                         Mode: 0777,
                         Size: int64(len(wavbody)),
                 }
-                if _, err := tw.WriteHeader(wavhdr); err != nil {
+                if err := tw.WriteHeader(wavhdr); err != nil {
                         log.Fatal(err)
                 }
-                if _, err := tw.Write(wavbody) {
+                if _, err := tw.Write(wavbody); err != nil {
                         log.Fatal(err)
                 }
 
