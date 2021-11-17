@@ -7,6 +7,48 @@
   
   wav header:  filename=${wav_filename}, data=wav_bytes, info_size = len(data )
   
+    #+begin_src go
+    func tarshard(writer io.Writer, records []*Record) {
+        tw := tar.NewWriter(writer)
+        for i := range records {
+                record := records[i]
+                name := ""
+                if record.Key  ==  ""{
+                        name  = strings.TrimSuffix(filepath.Base(record.WavPath), filepath.Ext(record.WavPath))
+                }else{
+                        name = record.Key
+                }
+                // txt heeader and body
+                hdr := &tar.Header{
+                        Name: name + ".txt",
+                        Mode: 0777,
+                        Size: int64(len(record.Text)),
+                }
+                if _, err := tw.WriteHeader(hdr); err != nil {
+                        log.Fatal(err)
+                }
+                if _, err := tw.Write([]byte(record.Text)) {
+                        log.Fatal(err)
+                }
+
+                // wav header and body
+                wavhdr := &tar.Header{
+                        Name: record.WavPath,
+                        Mode: 0777,
+                        Size: int64(len(record.WavPath)),
+                }
+                if _, err := tw.WriteHeader(wavhdr); err != nil {
+                        log.Fatal(err)
+                }
+                if _, err := tw.Write([]byte(record.WavPath)) {
+                        log.Fatal(err)
+                }
+
+        }
+        tw.Close()
+}
+    #+end_src
+  
 *** [TODO] untar 格式 dataset=processor(dataset,), 类tf。data格式
 
 *** [TODO] shard distributed , 数据不均衡
