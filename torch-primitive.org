@@ -1,4 +1,4 @@
-* one hot
+*** one hot
  #+begin_src bash
 def one_hot(input, voca=10):
   bs, seq_len = input.size(0), input.size(1)
