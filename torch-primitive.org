@@ -1,0 +1,11 @@
+* one hot
+def one_hot(input, voca=10):
+  bs, seq_len = input.size(0), input.size(1)
+  
+  zero = torch.zeros(bs,seq_len*voca, dtype=torch.int64).view(bs, seq_len, voca)
+  input = input.view(bs, seq_len, 1)
+
+  return zero.scatter_(2, input, input)
+
+input = torch.tensor([[1,0,9,4,5], [2,2,2,2,2]])
+print(one_hot(input))
