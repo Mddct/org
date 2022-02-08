@@ -1,0 +1,2 @@
+** cpc contrastive predicive coding
+***  [[https://paperswithcode.com/method/infonce][infnce loss]]
