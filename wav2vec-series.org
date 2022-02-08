@@ -1,2 +1,5 @@
-** cpc contrastive predicive coding
-***  [[https://paperswithcode.com/method/infonce][infnce loss]]
+*** cpc contrastive predicive coding
+****  [[https://paperswithcode.com/method/infonce][infnce loss]]
+****  https://crossminds.ai/video/the-infonce-loss-in-self-supervised-learning-606fef0bf43a7f2f827c1583/
+**** [[https://zhuanlan.zhihu.com/p/334772391][math]]
+
