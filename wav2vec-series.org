@@ -5,6 +5,8 @@ note: 关于softmax：
 
 - https://www.tensorflow.org/extras/candidate_sampling.pdf
 
+- __importance samplingm__
+
 1 smaple logit
 
 2 ”多标签“分类  -> {true_loss, smpale_loss ....}
