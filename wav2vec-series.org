@@ -1,5 +1,6 @@
 ** cpc contrastive predicive coding
 *** nce loss 
+note: 关于softmax：https://ruder.io/word-embeddings-softmax/
 1 smaple logit
 
 2 ”多标签“分类  -> {true_loss, smpale_loss ....}
