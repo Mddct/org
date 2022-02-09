@@ -32,6 +32,20 @@ tf.nn.sigmoid_cross_entropy_with_logits(
 
  #+end_src
  
+ #+begin_src bash
+ def _sum_rows(x):
+  """Returns a vector summing up each row of the matrix x."""
+  # _sum_rows(x) is equivalent to math_ops.reduce_sum(x, 1) when x is
+  # a matrix.  The gradient of _sum_rows(x) is more efficient than
+  # reduce_sum(x, 1)'s gradient in today's implementation. Therefore,
+  # we use _sum_rows(x) in the nce_loss() computation since the loss
+  # is mostly used for training.
+  cols = array_ops.shape(x)[1]
+  ones_shape = array_ops.stack([cols, 1])
+  ones = array_ops.ones(ones_shape, x.dtype)
+  return array_ops.reshape(math_ops.matmul(x, ones), [-1])
+ #+end_src
+ 
 **** [[https://github.com/tensorflow/tensorflow/blob/v2.8.0/tensorflow/python/ops/nn_impl.py#L2007-L2109][tensorflow nce]]
 ** infonce loss
 ***  [[https://paperswithcode.com/method/infonce][infnce loss]]
