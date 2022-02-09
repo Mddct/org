@@ -1,7 +1,9 @@
 ** cpc contrastive predicive coding
 *** nce loss 
 1 smaple logit
+
 2 ”多标签“分类  -> {true_loss, smpale_loss ....}
+
 3 sum over -1
 
 #+begin_src bash
