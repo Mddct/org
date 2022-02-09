@@ -1,5 +1,30 @@
 ** cpc contrastive predicive coding
 *** nce loss 
+#+begin_src bash
+# sigmoid_cross_entropy_with_logits
+ z * -log(sigmoid(x)) + (1 - z) * -log(1 - sigmoid(x))
+= z * -log(1 / (1 + exp(-x))) + (1 - z) * -log(exp(-x) / (1 + exp(-x)))
+= z * log(1 + exp(-x)) + (1 - z) * (-log(exp(-x)) + log(1 + exp(-x)))
+= z * log(1 + exp(-x)) + (1 - z) * (x + log(1 + exp(-x))
+= (1 - z) * x + log(1 + exp(-x))
+= x - x * z + log(1 + exp(-x))
+For x < 0, to avoid overflow in exp(-x):
+ x - x * z + log(1 + exp(-x))
+= log(exp(x)) - x * z + log(1 + exp(-x))
+= - x * z + log(1 + exp(x))
+
+Hence, to ensure stability and avoid overflow, the implementation uses this equivalent formulation
+max(x, 0) - x * z + log(1 + exp(-abs(x)))
+
+eg:
+logits = tf.constant([1., -1., 0., 1., -1., 0., 0.])
+labels = tf.constant([0., 0., 0., 1., 1., 1., 0.5])
+tf.nn.sigmoid_cross_entropy_with_logits(
+    labels=labels, logits=logits).numpy()
+
+
+ #+end_src
+ 
 **** [[https://github.com/tensorflow/tensorflow/blob/v2.8.0/tensorflow/python/ops/nn_impl.py#L2007-L2109][tensorflow nce]]
 ** infonce loss
 ***  [[https://paperswithcode.com/method/infonce][infnce loss]]
