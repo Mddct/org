@@ -1,0 +1,19 @@
+** FunctionDef
+
+#+begin_src protobuf
+// A function can be instantiated when the runtime can bind every attr
+// with a value. When a GraphDef has a call to a function, it must
+// have binding for every attr defined in the signature.
+message FunctionDef {
+  OpDef signature = 1;
+  repeated NodeDef node_def = 3;
+
+  // A mapping from the output arg names from `signature` to the
+  // outputs from `node_def` that should be returned by the function.
+  map<string, string> ret = 4;
+  ......
+}
+#+end_src 
+- signature
+- node def[]
+-  mapping: signature['signature'] -> which node_def
