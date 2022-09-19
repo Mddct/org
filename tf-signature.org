@@ -17,3 +17,23 @@ message FunctionDef {
 - signature
 - node def[]
 -  mapping: signature['signature'] -> which node_def
+
+** signature def
+#+begin_src protobuf
+message SignatureDef {
+  // Named input parameters.
+  map<string, TensorInfo> inputs = 1;
+  // Named output parameters.
+  map<string, TensorInfo> outputs = 2;
+  // Extensible method_name information enabling third-party users to mark a
+  // SignatureDef as supporting a particular method. This enables producers and
+  // consumers of SignatureDefs, e.g. a model definition library and a serving
+  // library to have a clear hand-off regarding the semantics of a computation.
+  //
+  // Note that multiple SignatureDefs in a single MetaGraphDef may have the same
+  // method_name. This is commonly used to support multi-headed computation,
+  // where a single graph computation may return multiple results.
+  string method_name = 3;
+}
+
+#+end_src
